@@ -1,7 +1,7 @@
 export type Ok<T> = {
   type: OkType
   value: T
-}x
+}
 
 export type Error = {
   type: ErrorType
@@ -56,6 +56,32 @@ export const map = <A, B>(
   return match(
     result,
     (value) => ok(fn(value)),
+    () => result,
+  )
+}
+
+export const map2 = <A, B, Value>(
+  fn: (a: A, b: B) => Value,
+  resultA: Result<A>,
+  resultB: Result<B>,
+): Result<Value> => {
+  return match(
+    result,
+    (value) => ok(fn(value)),
+    () => result,
+  )
+}
+
+export const tap = <A>(
+  fn: (value: A) => void,
+  result: Result<A>,
+): Result<A> => {
+  return match(
+    result,
+    (value) => {
+      fn(value)
+      return result
+    },
     () => result,
   )
 }
