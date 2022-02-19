@@ -23,7 +23,11 @@ test('mapError', (t) => {
 test('withDefault', (t) => {
   const result = elm.err('This is an error')
 
-  t.deepEqual(elm.withDefault(10, result), elm.ok(10))
+  t.deepEqual(elm.withDefault(10, result), 10)
+
+  const result2 = elm.ok(20)
+
+  t.deepEqual(elm.withDefault(10, result2), 20)
 })
 
 test('tap', (t) => {

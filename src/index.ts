@@ -141,13 +141,10 @@ export const mapError = <A>(
 /**
  * If the result is Ok return the value, but if the result is an Err then return a given default value.
  */
-export const withDefault = <A>(
-  defaultValue: A,
-  result: Result<A>,
-): Result<A> => {
-  return _match(
+export const withDefault = <A>(defaultValue: A, result: Result<A>): A => {
+  return match(
     result,
-    () => result,
-    () => ok(defaultValue),
-  )
+    (value) => value,
+    () => defaultValue,
+  ) as A
 }
