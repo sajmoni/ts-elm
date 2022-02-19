@@ -11,6 +11,32 @@ test('map', (t) => {
   )
 })
 
+test('mapError', (t) => {
+  const result = elm.error('This is an error')
+
+  t.deepEqual(
+    elm.mapError((message) => `${message} still`, result),
+    elm.error('This is an error still'),
+  )
+})
+
+test('withDefault', (t) => {
+  const result = elm.error('This is an error')
+
+  t.deepEqual(elm.withDefault(10, result), elm.ok(10))
+})
+
+test('tap', (t) => {
+  const result = elm.ok('This is ok')
+
+  t.deepEqual(
+    elm.tap(() => {
+      // No return
+    }, result),
+    elm.ok('This is ok'),
+  )
+})
+
 test('map2', (t) => {
   const result1 = elm.ok(5)
   const result2 = elm.ok(7)
