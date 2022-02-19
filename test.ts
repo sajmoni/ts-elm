@@ -12,16 +12,16 @@ test('map', (t) => {
 })
 
 test('mapError', (t) => {
-  const result = elm.error('This is an error')
+  const result = elm.err('This is an error')
 
   t.deepEqual(
     elm.mapError((message) => `${message} still`, result),
-    elm.error('This is an error still'),
+    elm.err('This is an error still'),
   )
 })
 
 test('withDefault', (t) => {
-  const result = elm.error('This is an error')
+  const result = elm.err('This is an error')
 
   t.deepEqual(elm.withDefault(10, result), elm.ok(10))
 })
@@ -59,7 +59,7 @@ test('andThen', (t) => {
 
     return typeof integer === 'number' && !Number.isNaN(integer)
       ? elm.ok(integer)
-      : elm.error(errorMessage)
+      : elm.err(errorMessage)
   }
 
   const result1 = elm.ok('123')
@@ -71,6 +71,6 @@ test('andThen', (t) => {
   const result2 = elm.ok('Not a number')
   t.deepEqual(
     elm.andThen((value) => parseIntResult(value), result2),
-    elm.error(errorMessage),
+    elm.err(errorMessage),
   )
 })

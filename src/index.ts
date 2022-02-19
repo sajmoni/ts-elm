@@ -15,7 +15,7 @@ enum ResultType {
   Err = 'Err',
 }
 
-export const error = (message: string): Err => {
+export const err = (message: string): Err => {
   return {
     type: ResultType.Err,
     message,
@@ -134,7 +134,7 @@ export const mapError = <A>(
   return _match(
     result,
     () => result,
-    (message) => error(fn(message)),
+    (message) => err(fn(message)),
   )
 }
 
