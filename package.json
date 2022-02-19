@@ -12,6 +12,10 @@
     "qa": "tsc && xo --fix"
   },
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sajmoni/ts-elm.git"
+  },
   "files": [
     "dist/"
   ],
