@@ -54,7 +54,7 @@
     }
   },
   "devDependencies": {
-    "ava": "3.15.0",
+    "ava": "4.0.1",
     "esbuild-runner": "2.2.1",
     "np": "7.6.0",
     "package-preview": "4.0.0",
