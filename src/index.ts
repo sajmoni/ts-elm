@@ -1,30 +1,30 @@
 export type Ok<T> = {
-  type: ResultType.OkType
+  type: ResultType.Ok
   value: T
 }
 
-export type Error = {
-  type: ResultType.ErrorType
+export type Err = {
+  type: ResultType.Err
   message: string
 }
 
-export type Result<T> = Ok<T> | Error
+export type Result<T> = Ok<T> | Err
 
 enum ResultType {
-  OkType = 'Ok',
-  ErrorType = 'Error',
+  Ok = 'Ok',
+  Err = 'Err',
 }
 
-export const error = (message: string): Error => {
+export const error = (message: string): Err => {
   return {
-    type: ResultType.ErrorType,
+    type: ResultType.Err,
     message,
   }
 }
 
 export const ok = <T>(value: T): Ok<T> => {
   return {
-    type: ResultType.OkType,
+    type: ResultType.Ok,
     value,
   }
 }
@@ -35,9 +35,9 @@ const _match = <A, B>(
   onError: (message: string) => Result<A>,
 ): Result<A> | Result<B> => {
   switch (result.type) {
-    case ResultType.OkType:
+    case ResultType.Ok:
       return onOk(result.value)
-    case ResultType.ErrorType:
+    case ResultType.Err:
       return onError(result.message)
   }
 }
@@ -48,18 +48,15 @@ export const match = <A, B>(
   onError: (message: string) => B | void,
 ): B | void => {
   switch (result.type) {
-    case ResultType.OkType:
+    case ResultType.Ok:
       return onOk(result.value)
-    case ResultType.ErrorType:
+    case ResultType.Err:
       return onError(result.message)
   }
 }
 
 /**
  * Apply a function to a result. If the result is Ok, it will be converted. If the result is an Err, the same error value will propagate through.
- * @param fn
- * @param result
- * @returns
  */
 export const map = <A, B>(
   fn: (value: A) => B,
@@ -72,6 +69,9 @@ export const map = <A, B>(
   )
 }
 
+/**
+ * Apply a function if both results are Ok. If not, the first Err will propagate through.
+ */
 export const map2 = <A, B, Value>(
   fn: (valueA: A, valueB: B) => Value,
   resultA: Result<A>,
@@ -81,9 +81,9 @@ export const map2 = <A, B, Value>(
     resultA,
     (valueA) => {
       switch (resultB.type) {
-        case ResultType.OkType:
+        case ResultType.Ok:
           return ok(fn(valueA, resultB.value))
-        case ResultType.ErrorType:
+        case ResultType.Err:
           return resultB
       }
     },
@@ -91,6 +91,11 @@ export const map2 = <A, B, Value>(
   )
 }
 
+/**
+ * Execute a side effect without affecting the underlying result
+ *
+ * This is for obvious reasons not included in the original Elm API
+ */
 export const tap = <A>(
   fn: (value: A) => void,
   result: Result<A>,
@@ -107,9 +112,6 @@ export const tap = <A>(
 
 /**
  * Chain together a sequence of computations that may fail
- * @param fn
- * @param result
- * @returns
  */
 export const andThen = <A, B>(
   fn: (value: A) => Result<B>,
@@ -122,6 +124,9 @@ export const andThen = <A, B>(
   )
 }
 
+/**
+ * Transform an Err value
+ */
 export const mapError = <A>(
   fn: (message: string) => string,
   result: Result<A>,
@@ -133,6 +138,9 @@ export const mapError = <A>(
   )
 }
 
+/**
+ * If the result is Ok return the value, but if the result is an Err then return a given default value.
+ */
 export const withDefault = <A>(
   defaultValue: A,
   result: Result<A>,
