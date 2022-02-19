@@ -10,16 +10,16 @@
   <img src="https://badgen.net/bundlephobia/minzip/ts-elm" />
 </div>
 
-Implements Elms `Result` type in TypeScript. Use it to make error handling explicit.
+Implements [Elm's](https://elm-lang.org/) [`Result`](https://package.elm-lang.org/packages/elm/core/latest/Result) type in TypeScript. Use it to make error handling explicit.
 Instead of throwing errors, you create Results with the `error` function.
 
 Benefits:
 
 - Type signatures indicate if a function can fail or not
-- TypeScript ensures that errors are always handled
-- Work with the data as if it always succeeds and add error handling where it makes the most sense for you
+- Ensures that errors are always handled
+- Work with the data as if it always succeeds and add error handling where it makes the most sense
 
-There is purposefully no type guards to detect if a `Result` is `Ok` or `Error`. This is to force the use
+There is purposefully no type guards to detect if a `Result` is `Ok` or `Err`. This is to force the use
 of `match`, which ensures that Errors are always handled.
 
 ## :sparkles: Features
