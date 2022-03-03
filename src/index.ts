@@ -29,11 +29,14 @@ export const ok = <T>(value: T): Ok<T> => {
   }
 }
 
-const _match = <A, B, Error>(
-  result: Result<A, Error>,
-  onOk: (value: A) => Result<B, Error>,
-  onError: (error: Error) => Result<A, Error>,
-): Result<A, Error> | Result<B, Error> => {
+/**
+ * Internal match that returns a result
+ */
+const _match = <A, Value, X, Error>(
+  result: Result<A, X>,
+  onOk: (value: A) => Result<Value, X>,
+  onError: (error: X) => Result<A, Error>,
+): Result<A | Value, X | Error> => {
   switch (result.type) {
     case ResultType.Ok:
       return onOk(result.value)
@@ -61,7 +64,7 @@ export const match = <A, B, Error>(
 export const map = <A, Value, X>(
   fn: (value: A) => Value,
   result: Result<A, X>,
-): Result<Value, X> | Result<A, X> => {
+): Result<A | Value, X> => {
   return _match(
     result,
     (value) => ok(fn(value)),
@@ -76,16 +79,15 @@ export const map2 = <A, B, Value, X>(
   fn: (valueA: A, valueB: B) => Value,
   resultA: Result<A, X>,
   resultB: Result<B, X>,
-): any => {
+): Result<A | B | Value, X> => {
   return _match(
     resultA,
     (valueA) => {
-      switch (resultB.type) {
-        case ResultType.Ok:
-          return ok(fn(valueA, resultB.value))
-        case ResultType.Err:
-          return resultB
-      }
+      return _match(
+        resultB,
+        (valueB) => ok(fn(valueA, valueB)),
+        () => resultB,
+      )
     },
     () => resultA,
   )
@@ -116,7 +118,7 @@ export const tap = <A, Error>(
 export const andThen = <A, B, Error>(
   fn: (value: A) => Result<B, Error>,
   result: Result<A, Error>,
-): Result<A, Error> | Result<B, Error> => {
+): Result<A | B, Error> => {
   return _match(
     result,
     (value) => fn(value),
@@ -130,11 +132,10 @@ export const andThen = <A, B, Error>(
 export const mapError = <A, X, Y>(
   fn: (error: X) => Y,
   result: Result<A, X>,
-): Result<A, Y> | Result<A, X> => {
+): Result<A, X | Y> => {
   return _match(
     result,
     () => result,
-    // @ts-expect-error Will fix later
     (error) => err(fn(error)),
   )
 }

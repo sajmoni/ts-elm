@@ -23,11 +23,11 @@ test('mapError', (t) => {
 test('withDefault', (t) => {
   const result = elm.err('This is an error')
 
-  t.deepEqual(elm.withDefault(10, result), 10)
+  t.is(elm.withDefault(10, result), 10)
 
   const result2 = elm.ok(20)
 
-  t.deepEqual(elm.withDefault(10, result2), 20)
+  t.is(elm.withDefault(10, result2), 20)
 })
 
 test('tap', (t) => {
@@ -58,7 +58,7 @@ test('andThen', (t) => {
 
   const parseIntResult = (
     maybeInt: string,
-  ): elm.Result<number> | elm.Result<undefined> => {
+  ): elm.Result<number | undefined, string | undefined> => {
     const integer = Number.parseInt(maybeInt, 10)
 
     return typeof integer === 'number' && !Number.isNaN(integer)
