@@ -58,10 +58,10 @@ export const match = <A, B, Error>(
 /**
  * Apply a function to a result. If the result is Ok, it will be converted. If the result is an Err, the same error value will propagate through.
  */
-export const map = <A, B, Error>(
-  fn: (value: A) => B,
-  result: Result<A, Error>,
-): Result<B, Error> | Result<A, Error> => {
+export const map = <A, Value, X>(
+  fn: (value: A) => Value,
+  result: Result<A, X>,
+): Result<Value, X> | Result<A, X> => {
   return _match(
     result,
     (value) => ok(fn(value)),
@@ -72,10 +72,10 @@ export const map = <A, B, Error>(
 /**
  * Apply a function if both results are Ok. If not, the first Err will propagate through.
  */
-export const map2 = <A, B, Value, Error>(
+export const map2 = <A, B, Value, X>(
   fn: (valueA: A, valueB: B) => Value,
-  resultA: Result<A, Error>,
-  resultB: Result<B, Error>,
+  resultA: Result<A, X>,
+  resultB: Result<B, X>,
 ): any => {
   return _match(
     resultA,
