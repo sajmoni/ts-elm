@@ -1,3 +1,10 @@
+// Types
+
+enum ResultType {
+  Ok = 'Ok',
+  Err = 'Err',
+}
+
 export type Ok<T> = {
   type: ResultType.Ok
   value: T
@@ -10,24 +17,7 @@ export type Err<T> = {
 
 export type Result<Value, Error> = Ok<Value> | Err<Error>
 
-enum ResultType {
-  Ok = 'Ok',
-  Err = 'Err',
-}
-
-export const err = <Error>(error: Error): Err<Error> => {
-  return {
-    type: ResultType.Err,
-    error,
-  }
-}
-
-export const ok = <T>(value: T): Ok<T> => {
-  return {
-    type: ResultType.Ok,
-    value,
-  }
-}
+// Internal
 
 /**
  * Internal match that returns a result
@@ -45,6 +35,25 @@ const _match = <A, Value, X, Error>(
   }
 }
 
+// External API
+
+export const ok = <T>(value: T): Ok<T> => {
+  return {
+    type: ResultType.Ok,
+    value,
+  }
+}
+
+export const err = <Error>(error: Error): Err<Error> => {
+  return {
+    type: ResultType.Err,
+    error,
+  }
+}
+
+/**
+ * Unwrap the Result to get the actual value
+ */
 export const match = <A, B, Error>(
   result: Result<A, Error>,
   onOk: (value: A) => B | void,
