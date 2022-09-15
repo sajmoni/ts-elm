@@ -35,22 +35,12 @@ of `match`, which ensures that Errors are always handled.
 
 ## :package: Install
 
-**npm**
-
-```
+```sh
 npm install ts-elm
-```
-
-**yarn**
-
-```
-yarn add ts-elm
 ```
 
 ---
 
 ## :newspaper: API
 
----
 
-## :book: Recipes
