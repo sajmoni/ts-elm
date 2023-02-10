@@ -61,9 +61,7 @@ Apply a function to a result. If the result is Ok, it will be converted. If the 
 Example:
 
 ```ts
-const sqrt = (x) => x ** 2
-
-map(sqrt, ok(4)) === ok(2)
-map(sqrt, err('Bad input')) === err('Bad input')
+map(Math.sqrt, ok(4)) // ok(2)
+map(Math.sqrt, err('Bad input')) // err('Bad input')
 ```
 
