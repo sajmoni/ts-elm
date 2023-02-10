@@ -43,4 +43,30 @@ npm install ts-elm
 
 ## :newspaper: API
 
+The goal of the API is to be as similar to the original Elm code as possible
+
+### Type and Constructors
+
+```ts
+type Result<Value, Error> = Ok<Value> | Err<Error>
+```
+
+A Result is either Ok meaning the computation succeeded, or it is an Err meaning that there was some failure.
+
+### Mapping
+
+```ts
+type map = ((x: any) => any, result: Result) => Result
+```
+
+Apply a function to a result. If the result is Ok, it will be converted. If the result is an Err, the same error value will propagate through.
+
+Example:
+
+```ts
+const sqrt = (x) => x ** 2
+
+map(sqrt, ok(4)) === ok(2)
+map(sqrt, err('Bad input')) === err('Bad input')
+```
 
