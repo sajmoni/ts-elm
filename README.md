@@ -11,7 +11,7 @@
 </div>
 
 Implements [Elm's](https://elm-lang.org/) [`Result`](https://package.elm-lang.org/packages/elm/core/latest/Result) type in TypeScript. Use it to make error handling explicit.
-Instead of throwing errors, you create Results with the `error` function.
+Instead of throwing errors, you create Results with the `ok` and `err` functions.
 
 ## :sparkles: Benefits
 
